@@ -1,22 +1,12 @@
-kind: 'CDN'
-version: '1'
+kind: "CDN"
+version: "1"
 data:
   originSelectors:
     rules:
-      - name: route-fonterra-auth-to-edge-function
-        when: { reqProperty: path, like: "/api/v1/web/fonterra-auth*" }
-        action:
-          type: selectAemOrigin
-          originName: edgefunction-my-edge-function
-          skipCache: true
-      - name: route-weather-to-edge-function
-        when: { reqProperty: path, equals: "/weather" }
-        action:
-          type: selectAemOrigin
-          originName: edgefunction-my-edge-function
-          skipCache: true
-      - name: route-hello-world-to-edge-function
-        when: { reqProperty: path, equals: "/hello-world" }
+      - name: route-all-customdemo-to-edge-function
+        when:
+          reqProperty: domain
+          equals: "customdemo.run.place"
         action:
           type: selectAemOrigin
           originName: edgefunction-my-edge-function
