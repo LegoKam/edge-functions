@@ -3,13 +3,13 @@ version: "1"
 data:
   originSelectors:
     rules:
-      - name: route-all-customdemo-to-edge-function
+      - name: route-fonterra-auth-to-edge-function
         when:
           allOf:
             - reqProperty: domain
               equals: "customdemo.run.place"
             - reqProperty: path
-              doesNotMatch: "^/global/en(/.*)?$"
+              like: "/api/v1/web/fonterra-auth*"
         action:
           type: selectAemOrigin
           originName: edgefunction-my-edge-function
