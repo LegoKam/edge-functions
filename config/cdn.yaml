@@ -8,8 +8,8 @@ data:
           allOf:
             - reqProperty: domain
               equals: "customdemo.run.place"
-            - reqHeader: x-edgefunction-request
-              exists: false
+            - reqProperty: path
+              doesNotMatch: "^/global/en(/.*)?$"
         action:
           type: selectAemOrigin
           originName: edgefunction-my-edge-function
