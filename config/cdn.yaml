@@ -5,8 +5,11 @@ data:
     rules:
       - name: route-all-customdemo-to-edge-function
         when:
-          reqProperty: domain
-          equals: "customdemo.run.place"
+          allOf:
+            - reqProperty: domain
+              equals: "customdemo.run.place"
+            - reqHeader: x-edgefunction-request
+              exists: false
         action:
           type: selectAemOrigin
           originName: edgefunction-my-edge-function
