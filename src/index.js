@@ -16,6 +16,9 @@ import * as response from './lib/response.js';
 import { log } from './lib/log.js';
 import { weatherHandler } from "./weather.js";
 
+const FONTERRA_AUTH_ORIGIN = "https://31876-958orangelandfowl.adobeio-static.net";
+const FONTERRA_AUTH_PREFIX = "/api/v1/web/fonterra-auth";
+
 addEventListener("fetch", (event) => event.respondWith(handleRequest(event)));
 
 async function handleRequest(event) {
@@ -32,6 +35,10 @@ async function handleRequest(event) {
       finalResponse = new Response("Hello World from the edge!", { status: 200 });
     } else if (url.pathname === "/weather" && req.method === "GET") {
       finalResponse = await weatherHandler(req, event.client);
+    } else if (url.pathname.startsWith(FONTERRA_AUTH_PREFIX)) {
+      const upstreamUrl = new URL(`${url.pathname}${url.search}`, FONTERRA_AUTH_ORIGIN);
+      const upstreamRequest = new Request(upstreamUrl.toString(), req);
+      finalResponse = await fetch(upstreamRequest);
     } else {
       finalResponse = response.notFound();
     }
