@@ -18,6 +18,7 @@ import { weatherHandler } from "./weather.js";
 
 const FONTERRA_AUTH_ORIGIN = "https://31876-958orangelandfowl.adobeio-static.net";
 const FONTERRA_AUTH_PREFIX = "/api/v1/web/fonterra-auth";
+const ORIGIN_PASSTHROUGH_PREFIX = "/global/en";
 
 addEventListener("fetch", (event) => event.respondWith(handleRequest(event)));
 
@@ -29,7 +30,9 @@ async function handleRequest(event) {
 
   try {
     // Route matching
-    if (url.pathname === "/" && req.method === "GET") {
+    if (url.pathname.startsWith(ORIGIN_PASSTHROUGH_PREFIX)) {
+      finalResponse = await fetch(req);
+    } else if (url.pathname === "/" && req.method === "GET") {
       finalResponse = new Response("Hello World from the edge!", { status: 200 });
     } else if (url.pathname === "/hello-world" && req.method === "GET") {
       finalResponse = new Response("Hello World from the edge!", { status: 200 });
