@@ -3,6 +3,9 @@ version: "1"
 data:
   functions:
     - name: my-edge-function
+      origins:
+        - name: customdemo-origin
+          domain: customdemo.run.place
   # Uncomment to enable secrets
   # secrets:
   #   - key: API_TOKEN

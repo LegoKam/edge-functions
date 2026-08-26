@@ -20,6 +20,8 @@ const FONTERRA_AUTH_ORIGIN = "https://31876-958orangelandfowl.adobeio-static.net
 const FONTERRA_AUTH_PREFIX = "/api/v1/web/fonterra-auth";
 const ORIGIN_PASSTHROUGH_PREFIX = "/global/en";
 const EDGE_LOOP_BREAK_HEADER = "x-edgefunction-request";
+const CUSTOMDEMO_ORIGIN = "https://customdemo.run.place";
+const CUSTOMDEMO_BACKEND = "customdemo-origin";
 
 addEventListener("fetch", (event) => event.respondWith(handleRequest(event)));
 
@@ -32,9 +34,10 @@ async function handleRequest(event) {
   try {
     // Route matching
     if (url.pathname.startsWith(ORIGIN_PASSTHROUGH_PREFIX)) {
-      const passthroughRequest = new Request(req);
+      const passthroughUrl = new URL(`${url.pathname}${url.search}`, CUSTOMDEMO_ORIGIN);
+      const passthroughRequest = new Request(passthroughUrl.toString(), req);
       passthroughRequest.headers.set(EDGE_LOOP_BREAK_HEADER, "true");
-      finalResponse = await fetch(passthroughRequest);
+      finalResponse = await fetch(passthroughRequest, { backend: CUSTOMDEMO_BACKEND });
     } else if (url.pathname === "/" && req.method === "GET") {
       finalResponse = new Response(" 1 Hello World from the edge!", { status: 200 });
     } else if (url.pathname === "/hello-world" && req.method === "GET") {
