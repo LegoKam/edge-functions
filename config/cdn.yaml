@@ -3,6 +3,32 @@ version: "1"
 data:
   originSelectors:
     rules:
+      - name: route-my-account-to-edge-function
+        when:
+          allOf:
+            - reqProperty: domain
+              equals: "customdemo.run.place"
+            - reqProperty: path
+              matches: "^/my-account(/.*)?$"
+            - reqHeader: x-edgefunction-request
+              exists: false
+        action:
+          type: selectAemOrigin
+          originName: edgefunction-secure-my-account-routing
+          skipCache: true
+      - name: route-global-en-my-account-to-edge-function
+        when:
+          allOf:
+            - reqProperty: domain
+              equals: "customdemo.run.place"
+            - reqProperty: path
+              matches: "^/global/en/my-account(/.*)?$"
+            - reqHeader: x-edgefunction-request
+              exists: false
+        action:
+          type: selectAemOrigin
+          originName: edgefunction-secure-my-account-routing
+          skipCache: true
       - name: route-fonterra-auth-to-edge-function
         when:
           allOf:
