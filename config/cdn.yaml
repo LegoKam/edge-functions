@@ -9,9 +9,9 @@ data:
             - reqProperty: domain
               equals: "customdemo.run.place"
             - reqProperty: path
-              matches: "^/my-account(/.*)?$"
-            - reqHeader: x-edgefunction-request
-              exists: false
+              matches: "^/my-account/.+$"
+            - reqHeader: cookie
+              doesNotMatch: '(^|;\s*)fonterra_auth_token='
         action:
           type: selectAemOrigin
           originName: edgefunction-secure-my-account-routing
@@ -22,9 +22,9 @@ data:
             - reqProperty: domain
               equals: "customdemo.run.place"
             - reqProperty: path
-              matches: "^/global/en/my-account(/.*)?$"
-            - reqHeader: x-edgefunction-request
-              exists: false
+              matches: "^/global/en/my-account/.+$"
+            - reqHeader: cookie
+              doesNotMatch: '(^|;\s*)fonterra_auth_token='
         action:
           type: selectAemOrigin
           originName: edgefunction-secure-my-account-routing
