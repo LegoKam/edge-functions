@@ -12,5 +12,5 @@ data:
               like: "/api/v1/web/fonterra-auth*"
         action:
           type: selectAemOrigin
-          originName: edgefunction-my-edge-function
+          originName: edgefunction-secure-api-routing
           skipCache: true

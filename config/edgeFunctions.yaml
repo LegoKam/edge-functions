@@ -3,6 +3,7 @@ version: "1"
 data:
   functions:
     - name: my-edge-function
+    - name: secure-api-routing
   # Uncomment to enable secrets
   # secrets:
   #   - key: API_TOKEN
