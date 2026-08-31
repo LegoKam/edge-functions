@@ -17,6 +17,7 @@ import { log } from './lib/log.js';
 
 const FONTERRA_AUTH_ORIGIN = "https://31876-958orangelandfowl.adobeio-static.net";
 const FONTERRA_AUTH_PREFIX = "/api/v1/web/fonterra-auth";
+const PUBLIC_SITE_ORIGIN = "https://customdemo.run.place";
 const EDGE_LOOP_BREAK_HEADER = "x-edgefunction-request";
 const AUTH_COOKIE_NAME = "fonterra_auth_token";
 const MY_ACCOUNT_PREFIX = "/my-account";
@@ -54,7 +55,7 @@ function buildUnauthorizedRedirect(url) {
   const loginPath = isPathOrChild(url.pathname, GLOBAL_MY_ACCOUNT_PREFIX)
     ? GLOBAL_MY_ACCOUNT_PREFIX
     : MY_ACCOUNT_PREFIX;
-  const loginUrl = new URL(loginPath, url.origin);
+  const loginUrl = new URL(loginPath, PUBLIC_SITE_ORIGIN);
   loginUrl.searchParams.set("error", "401");
   return new Response("Access denied", {
     status: 401,
@@ -68,7 +69,9 @@ function buildUnauthorizedRedirect(url) {
 }
 
 async function passthroughToOrigin(req) {
-  const passthroughRequest = new Request(req);
+  const reqUrl = new URL(req.url);
+  const passthroughUrl = new URL(`${reqUrl.pathname}${reqUrl.search}`, PUBLIC_SITE_ORIGIN);
+  const passthroughRequest = new Request(passthroughUrl.toString(), req);
   passthroughRequest.headers.set(EDGE_LOOP_BREAK_HEADER, "true");
   return fetch(passthroughRequest);
 }
