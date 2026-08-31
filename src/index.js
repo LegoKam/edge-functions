@@ -14,7 +14,6 @@ governing permissions and limitations under the License.
 
 import * as response from './lib/response.js';
 import { log } from './lib/log.js';
-import { weatherHandler } from "./weather.js";
 
 const FONTERRA_AUTH_ORIGIN = "https://31876-958orangelandfowl.adobeio-static.net";
 const FONTERRA_AUTH_PREFIX = "/api/v1/web/fonterra-auth";
@@ -91,12 +90,6 @@ async function handleRequest(event) {
       } else {
         finalResponse = await passthroughToOrigin(req);
       }
-    } else if (url.pathname === "/" && req.method === "GET") {
-      finalResponse = new Response(" 1 Hello World from the edge!", { status: 200 });
-    } else if (url.pathname === "/hello-world" && req.method === "GET") {
-      finalResponse = new Response("1 Hello World from the edge!", { status: 200 });
-    } else if (url.pathname === "/weather" && req.method === "GET") {
-      finalResponse = await weatherHandler(req, event.client);
     } else if (isFonterraAuthPath(url.pathname)) {
       const upstreamUrl = new URL(`${url.pathname}${url.search}`, FONTERRA_AUTH_ORIGIN);
       const upstreamRequest = new Request(upstreamUrl.toString(), req);
