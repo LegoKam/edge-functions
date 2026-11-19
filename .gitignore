@@ -148,3 +148,4 @@ dist
 /node_modules
 /bin
 /pkg
+/build

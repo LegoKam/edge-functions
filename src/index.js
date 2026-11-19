@@ -15,6 +15,7 @@ governing permissions and limitations under the License.
 import * as response from './lib/response.js';
 import { log } from './lib/log.js';
 import { weatherHandler } from "./weather.js";
+import { formPageHandler, isFormPage } from "./forms/handler.js";
 
 const FONTERRA_AUTH_ORIGIN = "https://31876-958orangelandfowl.adobeio-static.net";
 const FONTERRA_AUTH_PREFIX = "/api/v1/web/fonterra-auth";
@@ -39,6 +40,9 @@ async function handleRequest(event) {
       const upstreamUrl = new URL(`${url.pathname}${url.search}`, FONTERRA_AUTH_ORIGIN);
       const upstreamRequest = new Request(upstreamUrl.toString(), req);
       finalResponse = await fetch(upstreamRequest);
+    } else if (req.method === "GET" && isFormPage(url.pathname)) {
+      // SecurGov pages: render embedded adaptive forms into the page HTML
+      finalResponse = await formPageHandler(req);
     } else {
       finalResponse = response.notFound();
     }

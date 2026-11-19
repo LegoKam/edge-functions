@@ -14,3 +14,15 @@ data:
           type: selectAemOrigin
           originName: edgefunction-my-edge-function
           skipCache: true
+      # SecurGov pages with an embedded adaptive form: the edge function fetches
+      # the page from Edge Delivery and renders the form into its HTML.
+      - name: route-securgov-form-pages-to-edge-function
+        when:
+          allOf:
+            - reqProperty: domain
+              equals: "securgov.run.place"
+            - reqProperty: path
+              like: "/secure/*"
+        action:
+          type: selectAemOrigin
+          originName: edgefunction-my-edge-function

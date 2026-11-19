@@ -1,0 +1,4 @@
+{
+  "node-option": ["import=./test/support/register.mjs"],
+  "spec": ["test/*-test.js"]
+}
